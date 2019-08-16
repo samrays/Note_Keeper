@@ -1,1 +1,12 @@
-<resources></resources>
+<resources>
+
+    <style name="CourseTitle" parent="@android:style/TextAppearance.Material.Medium">
+        <item name="android:textColor">@color/tintColor</item>
+        <item name="android:textStyle">bold</item>
+
+    </style>
+
+    <style name="AddFab" parent="@style/Widget.Design.FloatingActionButton">
+        <item name="android:tint">@android:color/white</item>
+    </style>
+</resources>

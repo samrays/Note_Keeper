@@ -26,22 +26,26 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:autofillHints=""
         android:ems="10"
-        android:hint="@string/note_title"
+        android:hint="@string/note_title_hint"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="@+id/spinner_id"
         app:layout_constraintStart_toStartOf="@+id/spinner_id"
-        app:layout_constraintTop_toBottomOf="@+id/spinner_id" />
+        app:layout_constraintTop_toBottomOf="@+id/spinner_id"
+        tools:targetApi="o" />
 
     <EditText
         android:id="@+id/Note_id"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
+        android:autofillHints=""
         android:ems="10"
-        android:hint="Note"
+        android:hint="@string/note_text_hint"
         android:inputType="textMultiLine"
         app:layout_constraintEnd_toEndOf="@+id/Title_id"
         app:layout_constraintStart_toStartOf="@+id/Title_id"
-        app:layout_constraintTop_toBottomOf="@+id/Title_id" />
+        app:layout_constraintTop_toBottomOf="@+id/Title_id"
+        tools:targetApi="o" />
 </android.support.constraint.ConstraintLayout>
