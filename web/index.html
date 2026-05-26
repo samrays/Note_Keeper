@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#1565c0">
+  <title>Note Keeper</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+
+    <!-- ── Auth overlay ──────────────────────────────── -->
+    <div class="auth-overlay" id="auth-overlay">
+      <div class="auth-card">
+        <div class="auth-logo">
+          <span class="auth-logo-icon">📝</span>
+          <h1 class="auth-logo-title">Note Keeper</h1>
+        </div>
+
+        <div class="auth-panel" id="login-panel">
+          <h2 class="auth-panel-title">Welcome back</h2>
+          <form id="login-form" class="auth-form" novalidate>
+            <div class="auth-field">
+              <label>Email</label>
+              <input id="login-email" type="email" placeholder="you@example.com" autocomplete="email" required>
+            </div>
+            <div class="auth-field">
+              <label>Password</label>
+              <input id="login-password" type="password" placeholder="••••••••" autocomplete="current-password" required>
+            </div>
+            <p class="auth-error" id="login-error"></p>
+            <button type="submit" class="btn btn-primary auth-submit">Log In</button>
+          </form>
+          <div class="auth-links">
+            <button class="auth-link" id="to-reset">Forgot password?</button>
+            <span class="auth-sep">·</span>
+            <button class="auth-link" id="to-signup">Create account</button>
+          </div>
+        </div>
+
+        <div class="auth-panel hidden" id="signup-panel">
+          <h2 class="auth-panel-title">Create account</h2>
+          <form id="signup-form" class="auth-form" novalidate>
+            <div class="auth-field">
+              <label>Display Name</label>
+              <input id="signup-name" type="text" placeholder="Your name" autocomplete="name" required>
+            </div>
+            <div class="auth-field">
+              <label>Email</label>
+              <input id="signup-email" type="email" placeholder="you@example.com" autocomplete="email" required>
+            </div>
+            <div class="auth-field">
+              <label>Password</label>
+              <input id="signup-password" type="password" placeholder="Min. 6 characters" autocomplete="new-password" required>
+            </div>
+            <div class="auth-field">
+              <label>Confirm Password</label>
+              <input id="signup-confirm" type="password" placeholder="••••••••" autocomplete="new-password" required>
+            </div>
+            <p class="auth-error" id="signup-error"></p>
+            <button type="submit" class="btn btn-primary auth-submit">Sign Up</button>
+          </form>
+          <div class="auth-links">
+            <button class="auth-link" id="to-login">Already have an account? Log in</button>
+          </div>
+        </div>
+
+        <div class="auth-panel hidden" id="reset-panel">
+          <h2 class="auth-panel-title">Reset Password</h2>
+          <p class="auth-desc">Enter your account email and we'll let you set a new password.</p>
+          <form id="reset-form" class="auth-form" novalidate>
+            <div class="auth-field">
+              <label>Email</label>
+              <input id="reset-email-input" type="email" placeholder="you@example.com" autocomplete="email" required>
+            </div>
+            <p class="auth-error" id="reset-error"></p>
+            <button type="submit" class="btn btn-primary auth-submit">Continue</button>
+          </form>
+          <div class="auth-links">
+            <button class="auth-link" id="back-to-login">Back to Log In</button>
+          </div>
+        </div>
+
+        <div class="auth-panel hidden" id="reset-confirm-panel">
+          <h2 class="auth-panel-title">Set New Password</h2>
+          <form id="reset-confirm-form" class="auth-form" novalidate>
+            <div class="auth-field">
+              <label>New Password</label>
+              <input id="reset-new-password" type="password" placeholder="Min. 6 characters" autocomplete="new-password" required>
+            </div>
+            <div class="auth-field">
+              <label>Confirm New Password</label>
+              <input id="reset-confirm-password" type="password" placeholder="••••••••" autocomplete="new-password" required>
+            </div>
+            <p class="auth-error" id="reset-confirm-error"></p>
+            <button type="submit" class="btn btn-primary auth-submit">Reset Password</button>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Sidebar overlay ───────────────────────────── -->
+    <div class="overlay" id="overlay"></div>
+
+    <!-- ── Sidebar ───────────────────────────────────── -->
+    <nav class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="user-avatar" id="user-avatar">U</div>
+        <div class="user-name"  id="user-name"></div>
+        <div class="user-email" id="user-email"></div>
+      </div>
+      <ul class="sidebar-nav" id="sidebar-nav">
+        <li data-view="notes" class="active"><span class="nav-icon">📝</span>Notes</li>
+        <li data-view="courses"><span class="nav-icon">📓</span>Note Guide</li>
+        <li data-action="share"><span class="nav-icon">📤</span>Share</li>
+        <li data-action="send"><span class="nav-icon">✉️</span>Send</li>
+        <li data-action="logout" class="logout-item"><span class="nav-icon">🚪</span>Log Out</li>
+      </ul>
+    </nav>
+
+    <!-- ── Main view ──────────────────────────────────── -->
+    <div class="main-view">
+      <header class="app-header">
+        <button class="icon-btn" id="menu-btn" title="Open menu">☰</button>
+        <h1 id="app-title">Notes</h1>
+        <button class="icon-btn" id="settings-btn" title="Settings">⚙️</button>
+      </header>
+
+      <div class="search-container hidden" id="search-container">
+        <div class="search-bar">
+          <span class="search-icon">🔍</span>
+          <input class="search-input" id="search-input" type="search"
+                 placeholder="Search by title, content, or tag…" autocomplete="off">
+          <button class="search-clear hidden" id="search-clear" title="Clear">✕</button>
+        </div>
+      </div>
+
+      <main id="content"></main>
+
+      <!-- Mobile bottom navigation -->
+      <nav class="bottom-nav" id="bottom-nav" aria-label="Main navigation">
+        <button class="bottom-nav-item active" data-view="notes">
+          <span class="bottom-nav-icon">📝</span>
+          <span class="bottom-nav-label">Notes</span>
+        </button>
+        <button class="bottom-nav-item" data-view="courses">
+          <span class="bottom-nav-icon">📓</span>
+          <span class="bottom-nav-label">Note Guide</span>
+        </button>
+      </nav>
+
+      <button class="fab" id="fab" title="New note">＋</button>
+    </div>
+
+    <!-- ── Note editor ────────────────────────────────── -->
+    <div class="editor-view" id="editor-view">
+      <header class="app-header">
+        <button class="icon-btn" id="back-btn"   title="Save and go back">←</button>
+        <h1>Note</h1>
+        <button class="icon-btn icon-btn-danger" id="delete-btn" title="Delete note">🗑</button>
+        <button class="icon-btn" id="next-btn"   title="Next note">→</button>
+        <button class="icon-btn" id="email-btn"    title="Email this note">✉️</button>
+        <button class="icon-btn" id="share-btn"    title="Share note">📤</button>
+        <button class="icon-btn" id="reminder-btn" title="Set reminder">🔔</button>
+        <button class="icon-btn" id="cancel-btn"   title="Cancel">✕</button>
+      </header>
+      <div class="editor-form">
+        <div class="form-group">
+          <label class="form-label" for="course-select">Category</label>
+          <select class="form-select" id="course-select"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label" for="note-title">Title</label>
+          <input class="form-input" id="note-title" type="text" placeholder="Note title" autocomplete="off">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Tags</label>
+          <div class="tag-area" id="tag-area">
+            <input class="tag-input" id="tag-input" type="text" placeholder="Add tag and press Enter…">
+          </div>
+        </div>
+
+        <!-- Rich-text toolbar -->
+        <div class="editor-toolbar" id="editor-toolbar" role="toolbar" aria-label="Text formatting">
+          <button class="toolbar-btn" data-cmd="bold"                title="Bold (Ctrl+B)"><b>B</b></button>
+          <button class="toolbar-btn" data-cmd="italic"             title="Italic (Ctrl+I)"><i>I</i></button>
+          <button class="toolbar-btn" data-cmd="underline"          title="Underline (Ctrl+U)"><u>U</u></button>
+          <span class="toolbar-sep" aria-hidden="true"></span>
+          <button class="toolbar-btn" data-cmd="insertUnorderedList" title="Bullet list">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+              <circle cx="2" cy="4"  r="1.5"/><rect x="5" y="3"  width="10" height="2" rx="1"/>
+              <circle cx="2" cy="8"  r="1.5"/><rect x="5" y="7"  width="10" height="2" rx="1"/>
+              <circle cx="2" cy="12" r="1.5"/><rect x="5" y="11" width="10" height="2" rx="1"/>
+            </svg>
+          </button>
+          <button class="toolbar-btn" data-cmd="insertOrderedList" title="Numbered list">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+              <text x="0" y="5"  font-size="5" font-family="monospace">1.</text>
+              <rect x="5" y="3"  width="10" height="2" rx="1"/>
+              <text x="0" y="10" font-size="5" font-family="monospace">2.</text>
+              <rect x="5" y="8"  width="10" height="2" rx="1"/>
+              <text x="0" y="15" font-size="5" font-family="monospace">3.</text>
+              <rect x="5" y="13" width="10" height="2" rx="1"/>
+            </svg>
+          </button>
+          <span class="toolbar-sep" aria-hidden="true"></span>
+          <button class="toolbar-btn" data-cmd="formatBlock" data-val="h3" title="Heading">H</button>
+          <button class="toolbar-btn" data-cmd="formatBlock" data-val="p"  title="Normal text">¶</button>
+          <span class="toolbar-sep" aria-hidden="true"></span>
+          <button class="toolbar-btn" data-cmd="strikeThrough" title="Strikethrough"><s>S</s></button>
+          <button class="toolbar-btn" id="highlight-btn" title="Highlight text"><mark>Hi</mark></button>
+          <span class="toolbar-sep" aria-hidden="true"></span>
+          <button class="toolbar-btn" data-cmd="formatBlock" data-val="blockquote" title="Blockquote">❝</button>
+          <button class="toolbar-btn" data-cmd="formatBlock" data-val="pre"        title="Code block">&lt;/&gt;</button>
+          <span class="toolbar-sep" aria-hidden="true"></span>
+          <button class="toolbar-btn" data-cmd="indent"  title="Indent">→|</button>
+          <button class="toolbar-btn" data-cmd="outdent" title="Outdent">|←</button>
+          <span class="toolbar-sep" aria-hidden="true"></span>
+          <button class="toolbar-btn" id="link-btn"   title="Insert link (Ctrl+K)">🔗</button>
+          <button class="toolbar-btn" id="image-btn"  title="Insert image">🖼</button>
+          <button class="toolbar-btn" id="attach-btn" title="Attach file">📎</button>
+          <span class="toolbar-sep" aria-hidden="true"></span>
+          <button class="toolbar-btn" data-cmd="undo" title="Undo (Ctrl+Z)">↩</button>
+          <button class="toolbar-btn" data-cmd="redo" title="Redo (Ctrl+Y)">↪</button>
+        </div>
+
+        <!-- Contenteditable rich-text area -->
+        <div class="form-richtext"
+             id="note-text"
+             contenteditable="true"
+             data-placeholder="Write your note here…"
+             spellcheck="true"
+             role="textbox"
+             aria-multiline="true"
+             aria-label="Note body"></div>
+
+        <!-- Attachment panel -->
+        <div class="attachment-panel hidden" id="attachment-panel"></div>
+        <input type="file" id="file-input" multiple class="hidden">
+      </div>
+    </div>
+
+    <!-- ── Settings modal ────────────────────────────── -->
+    <div class="modal-overlay" id="settings-overlay">
+      <div class="modal">
+        <div class="modal-header">Settings</div>
+        <div class="modal-body">
+          <div class="field-group">
+            <label class="field-label">Display Name</label>
+            <input class="field-input" id="setting-name" type="text" autocomplete="name">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Email Address</label>
+            <input class="field-input" id="setting-email" type="email" autocomplete="email">
+          </div>
+          <div class="field-group">
+            <label class="field-label">Favourite Social Network</label>
+            <input class="field-input" id="setting-social" type="text">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-text"    id="settings-cancel">Cancel</button>
+          <button class="btn btn-primary" id="settings-save">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Confirm / delete modal ─────────────────────── -->
+    <div class="modal-overlay" id="confirm-overlay">
+      <div class="modal">
+        <div class="modal-header modal-header-danger">Delete Note</div>
+        <div class="modal-body">
+          <p id="confirm-message"></p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-text"   id="confirm-cancel">Cancel</button>
+          <button class="btn btn-danger" id="confirm-ok">Delete</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Reminder modal ───────────────────────────────── -->
+    <div class="modal-overlay" id="reminder-overlay">
+      <div class="modal">
+        <div class="modal-header">Set Reminder</div>
+        <div class="modal-body">
+          <div class="field-group">
+            <label class="field-label">Remind me at</label>
+            <input class="field-input" id="reminder-datetime" type="datetime-local">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-text"    id="reminder-clear">Clear Reminder</button>
+          <button class="btn btn-text"    id="reminder-cancel">Cancel</button>
+          <button class="btn btn-primary" id="reminder-save">Save</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Share modal ────────────────────────────────────── -->
+    <div class="modal-overlay" id="share-overlay">
+      <div class="modal">
+        <div class="modal-header">Share Note</div>
+        <div class="modal-body">
+          <div class="field-group">
+            <label class="field-label">Share link</label>
+            <input class="field-input" id="share-link-input" type="text" readonly
+                   style="font-size:12px">
+          </div>
+          <p style="font-size:13px;color:#757575;margin-top:-8px">
+            Anyone with this link can view and import the note.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-text"    id="share-close">Close</button>
+          <button class="btn btn-text"    id="share-email-btn">Email</button>
+          <button class="btn btn-primary" id="share-copy-btn">Copy Link</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ── Import (shared note) modal ───────────────────── -->
+    <div class="modal-overlay" id="import-overlay">
+      <div class="modal">
+        <div class="modal-header">Shared Note</div>
+        <div class="modal-body">
+          <p id="import-message"></p>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-text"    id="import-cancel">Dismiss</button>
+          <button class="btn btn-primary" id="import-save">Save to My Notes</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="snackbar" id="snackbar"></div>
+
+  </div>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
